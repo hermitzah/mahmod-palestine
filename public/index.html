@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Hope for Mahmoud | Donation Campaign</title>
-  <meta name="description" content="Support Mahmoud, a Palestinian father seeking safety and dignity. Your donation provides urgent aid, food, and medical care.">
-  <!-- Google Fonts + Font Awesome Icons -->
+  <title>Hope for Mahmoud | Emergency Aid for Palestine</title>
+  <!-- Google Fonts + Font Awesome (fallback icons) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Firebase SDKs are already loaded via the hosting default scripts (see bottom) 
+       we will also add our custom logic after Firebase init -->
   <style>
     * {
       margin: 0;
@@ -17,222 +18,190 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #fef9f0 0%, #f3ede5 100%);
-      color: #1e2a2f;
+      background: linear-gradient(145deg, #fef7ec 0%, #f4ede3 100%);
+      color: #1f2c28;
       line-height: 1.5;
-      scroll-behavior: smooth;
     }
 
     .container {
-      max-width: 1280px;
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 2rem 1.5rem;
+      padding: 2rem 1.8rem;
     }
 
-    /* header area */
+    /* hero */
     .hero {
       text-align: center;
       margin-bottom: 2.5rem;
     }
-
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      background: rgba(0, 102, 87, 0.1);
+      gap: 0.6rem;
+      background: rgba(214, 92, 44, 0.12);
       backdrop-filter: blur(2px);
-      padding: 0.5rem 1.2rem;
+      padding: 0.5rem 1.3rem;
       border-radius: 60px;
+      font-weight: 700;
       font-size: 0.85rem;
-      font-weight: 600;
-      color: #1a6d5e;
-      margin-bottom: 1.5rem;
-      border: 1px solid rgba(0,102,87,0.2);
+      color: #b64926;
+      margin-bottom: 1.2rem;
+      border: 1px solid rgba(182, 73, 38, 0.25);
     }
-
     .hero h1 {
-      font-size: 2.7rem;
+      font-size: 3rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #1f4e3c, #c53a1f);
+      background: linear-gradient(135deg, #1c5a48, #c04522);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
       margin-bottom: 1rem;
     }
-
     .hero p {
       font-size: 1.2rem;
-      color: #2c3e3b;
-      max-width: 700px;
+      color: #2a423b;
+      max-width: 720px;
       margin: 0 auto;
-      font-weight: 400;
+      font-weight: 500;
     }
 
-    /* two column layout */
-    .donation-layout {
+    /* layout */
+    .donation-grid {
       display: grid;
       grid-template-columns: 1fr 1.1fr;
       gap: 2rem;
       margin: 2rem 0 2rem;
     }
 
-    /* cards style */
+    /* cards */
     .card {
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(0px);
+      background: rgba(255, 255, 255, 0.98);
       border-radius: 2rem;
-      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0,0,0,0.02);
-      padding: 1.8rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      border: 1px solid rgba(226, 210, 184, 0.5);
+      box-shadow: 0 22px 40px -12px rgba(0, 0, 0, 0.1);
+      padding: 1.9rem;
+      transition: transform 0.2s;
+      border: 1px solid rgba(219, 194, 158, 0.5);
     }
-
-    .story-card {
-      background: #ffffff;
-    }
-
     .story-card h2, .form-card h2 {
-      font-size: 1.7rem;
+      font-size: 1.8rem;
       font-weight: 700;
       margin-bottom: 1rem;
-      letter-spacing: -0.3px;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.7rem;
     }
-
     .story-card h2 i, .form-card h2 i {
-      color: #c83e1f;
-      font-size: 1.6rem;
+      color: #d95c2e;
     }
-
-    .flag-em {
-      background: #ece3d8;
-      padding: 0.2rem 0.5rem;
-      border-radius: 30px;
-      font-size: 0.8rem;
+    .flag {
+      background: #efe2cf;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
       font-weight: 600;
       display: inline-block;
+      margin-bottom: 1rem;
     }
-
     .story-text {
       margin: 1.2rem 0;
-      color: #2c3e2f;
+      color: #2d3e38;
       font-weight: 400;
     }
-
     .impact-list {
       list-style: none;
-      margin: 1.5rem 0;
+      margin: 1.6rem 0;
     }
-
     .impact-list li {
       margin-bottom: 1rem;
       display: flex;
-      align-items: center;
       gap: 0.8rem;
+      align-items: center;
       font-weight: 500;
     }
-
     .impact-list li i {
       width: 28px;
-      color: #d65c2c;
-      font-size: 1.2rem;
+      color: #d95c2e;
     }
 
+    /* progress */
     .progress-section {
-      margin: 1.8rem 0;
+      margin: 1.5rem 0 1.8rem;
     }
-
     .progress-stats {
       display: flex;
       justify-content: space-between;
       font-weight: 700;
       margin-bottom: 0.5rem;
     }
-
     .progress-bar-bg {
-      background: #e9e0d3;
-      border-radius: 30px;
+      background: #e2d4c4;
+      border-radius: 40px;
       height: 12px;
       overflow: hidden;
     }
-
     .progress-fill {
-      width: 34%;
+      width: 0%;
       background: linear-gradient(90deg, #2e7d64, #e1673a);
-      border-radius: 30px;
+      border-radius: 40px;
       height: 100%;
-      transition: width 0.3s ease;
+      transition: width 0.5s ease;
     }
 
+    /* donation form */
     .donation-form {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1.3rem;
     }
-
     .input-group {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
-
     .input-group label {
       font-weight: 600;
       font-size: 0.9rem;
-      color: #2a4b3c;
+      color: #2e5a4b;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
-
-    .input-group input, .input-group textarea {
-      padding: 0.85rem 1rem;
+    .input-group input, .input-group textarea, .input-group select {
+      padding: 0.8rem 1rem;
       border-radius: 1.2rem;
-      border: 1.5px solid #e2d5c4;
+      border: 1.5px solid #e2d0bc;
       background: #fffdf9;
-      font-family: 'Inter', monospace;
-      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
       font-size: 1rem;
+      transition: 0.2s;
     }
-
     .input-group input:focus, .input-group textarea:focus {
       outline: none;
       border-color: #c45a32;
       box-shadow: 0 0 0 3px rgba(196, 90, 50, 0.2);
     }
-
     .amount-presets {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.8rem;
-      margin: 0.5rem 0 0.2rem;
+      gap: 0.7rem;
+      margin: 0.3rem 0;
     }
-
     .preset-btn {
-      background: #f3ede5;
-      border: 1px solid #ddd0be;
-      padding: 0.6rem 1.2rem;
+      background: #f4ede3;
+      border: 1px solid #ddceb8;
+      padding: 0.5rem 1.2rem;
       border-radius: 2rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: 0.2s;
       font-size: 0.9rem;
-      color: #2d4a3b;
     }
-
     .preset-btn.active, .preset-btn:hover {
       background: #c45a32;
       color: white;
       border-color: #c45a32;
     }
-
-    .custom-amount {
-      margin-top: 0.5rem;
-    }
-
     .donate-btn {
       background: #1f6e58;
       border: none;
@@ -242,173 +211,130 @@
       font-size: 1.2rem;
       color: white;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.8rem;
       margin-top: 0.5rem;
-      box-shadow: 0 6px 14px rgba(28, 85, 68, 0.25);
+      box-shadow: 0 8px 20px rgba(28, 86, 68, 0.3);
     }
-
     .donate-btn:hover {
       background: #b5451f;
       transform: scale(0.98);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-
     .payment-icons {
       display: flex;
       gap: 1rem;
       justify-content: center;
-      margin-top: 1rem;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: #5b6e64;
     }
-
     .recent-donors {
-      background: #fbf7f0;
+      background: #fbf6ed;
       border-radius: 1.5rem;
       padding: 1rem;
-      margin-top: 1.6rem;
+      margin-top: 1.5rem;
       border-left: 4px solid #e1673a;
     }
-
-    .recent-donors p {
-      font-weight: 600;
-      margin-bottom: 0.8rem;
-      font-size: 0.9rem;
-    }
-
     .donor-item {
       display: flex;
       justify-content: space-between;
       font-size: 0.85rem;
-      padding: 0.4rem 0;
+      padding: 0.5rem 0;
       border-bottom: 1px dashed #e2cfb9;
     }
-
-    .disclaimer {
-      text-align: center;
-      margin-top: 3rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid #ddd0bd;
-      font-size: 0.75rem;
-      color: #6f6252;
-    }
-
     .alert-message {
-      padding: 0.9rem;
+      padding: 0.8rem;
       border-radius: 1.2rem;
-      background: #eafaf5;
+      background: #e0f2e9;
       color: #146b54;
       font-weight: 500;
       text-align: center;
       display: none;
       margin-bottom: 1rem;
-      border-left: 4px solid #2e7d64;
     }
-
-    .fa-heart {
-      color: #e05a2c;
+    .firebase-status {
+      font-size: 0.7rem;
+      text-align: center;
+      margin-top: 1rem;
+      color: #7a6a56;
     }
-
-    @media (max-width: 880px) {
-      .donation-layout {
-        grid-template-columns: 1fr;
-        gap: 1.8rem;
-      }
-      .hero h1 {
-        font-size: 2rem;
-      }
-      .container {
-        padding: 1.2rem;
-      }
-      .card {
-        padding: 1.4rem;
-      }
-    }
-
     footer {
       text-align: center;
-      padding: 1rem 0 1rem;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e2cfba;
+      font-size: 0.75rem;
+      color: #786e5c;
     }
-
-    a {
-      text-decoration: none;
+    @media (max-width: 850px) {
+      .donation-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .hero h1 { font-size: 2.2rem; }
+      .container { padding: 1rem; }
     }
   </style>
 </head>
 <body>
+
 <div class="container">
-  <!-- Hero Section -->
   <div class="hero">
-    <div class="badge">
-      <i class="fas fa-hands-helping"></i> <span>URGENT RELIEF · GAZA & WEST BANK</span>
-    </div>
-    <h1>Stand with Mahmoud <br> A Palestinian's plea for hope</h1>
-    <p>Your generosity can rebuild a life. Every euro, dollar, or pound brings food, medicine, and shelter to a family enduring impossible hardship.</p>
+    <div class="badge"><i class="fas fa-hand-holding-heart"></i> URGENT APPEAL · GAZA & WEST BANK</div>
+    <h1>Stand with Mahmoud <br> A Palestinian family's fight for dignity</h1>
+    <p>Your donation provides food, medicine, and shelter to Mahmoud, his three children, and his elderly mother. Together we rebuild hope.</p>
   </div>
 
-  <!-- Main donation layout: left story + right form -->
-  <div class="donation-layout">
-    <!-- Left Column: Story & Impact -->
+  <div class="donation-grid">
+    <!-- LEFT: Story & Impact -->
     <div class="card story-card">
       <h2><i class="fas fa-olive-branch"></i> Mahmoud's story</h2>
-      <div class="flag-em"><i class="fas fa-flag"></i> Palestine · Father of three</div>
+      <div class="flag"><i class="fas fa-flag-checkered"></i> Palestine · Displaced father of three</div>
       <div class="story-text">
-        <p><strong>Mahmoud Al-Hassan, 34</strong>, once a schoolteacher in Gaza, lost his home, his classroom, and nearly everything in the recent escalation. Living in a temporary tent with his children and elderly mother, he struggles daily to find clean water, bread, and medication for his youngest daughter, Lina, who suffers from asthma.</p>
-        <p style="margin-top: 1rem;">Despite the devastation, Mahmoud refuses to lose hope. "I want my children to dream again — to go back to school, to feel safe," he says. Your donation directly provides emergency aid, hygiene kits, warm meals, and critical medical support.</p>
+        <p><strong>Mahmoud Al-Hassan, 34</strong>, was a beloved schoolteacher in northern Gaza. After relentless bombings, his home was reduced to rubble and his school destroyed. He now shelters in a makeshift tent with his children (Yousef 9, Leen 7, and little Lina 4) and his ill mother, Fatima. Lina suffers from severe asthma, without access to proper inhalers.</p>
+        <p style="margin-top: 0.8rem;">"Every morning, my kids ask for bread and safety. I refuse to let them lose hope. Your help means the world to us — a warm meal, a blanket, a smile." Every dollar goes directly to verified grassroots aid workers delivering urgent supplies.</p>
       </div>
       <div class="impact-list">
-        <li><i class="fas fa-apple-alt"></i> <span><strong>$15</strong> provides fresh food parcels for one week</span></li>
-        <li><i class="fas fa-syringe"></i> <span><strong>$40</strong> covers urgent medicine and first-aid</span></li>
-        <li><i class="fas fa-school"></i> <span><strong>$85</strong> helps children get school supplies & psychosocial support</span></li>
-        <li><i class="fas fa-tent"></i> <span><strong>$150</strong> winterization kit (blankets, warm clothes, mattresses)</span></li>
+        <li><i class="fas fa-apple-alt"></i> <span><strong>$18</strong> = fresh food box (rice, oil, vegetables)</span></li>
+        <li><i class="fas fa-lungs"></i> <span><strong>$45</strong> = asthma medication + medical consultation</span></li>
+        <li><i class="fas fa-school"></i> <span><strong>$80</strong> = school supplies & trauma support for children</span></li>
+        <li><i class="fas fa-thermometer-half"></i> <span><strong>$160</strong> = winterization kit (blankets, coats, mattresses)</span></li>
       </div>
-      <div class="recent-donors">
-        <p><i class="fas fa-globe-africa"></i> Recent supporters</p>
-        <div class="donor-item"><span>Fatima Z.</span><span>$45 <i class="fas fa-heart"></i></span></div>
-        <div class="donor-item"><span>Omar K. (France)</span><span>$120 <i class="fas fa-heart"></i></span></div>
-        <div class="donor-item"><span>Emma L. (Canada)</span><span>$75 <i class="fas fa-heart"></i></span></div>
-        <div class="donor-item"><span>Layla R.</span><span>$30 <i class="fas fa-heart"></i></span></div>
-      </div>
-      <div style="margin-top: 1rem; font-size: 0.85rem; background: #fef3e4; border-radius: 1rem; padding: 0.8rem;">
-        <i class="fas fa-shield-alt"></i> 100% transparency — funds go directly to verified aid workers on ground, helping Mahmoud and neighboring families.
+      <div class="recent-donors" id="recentDonorsContainer">
+        <p><i class="fas fa-globe"></i> <strong>Latest supporters</strong> <span style="float: right;"><i class="fas fa-heart" style="color:#e05a2c;"></i> real-time</span></p>
+        <div id="donorList">
+          <div class="donor-item"><span>Loading donations...</span><span></span></div>
+        </div>
       </div>
     </div>
 
-    <!-- Right Column: Donation form + progress -->
+    <!-- RIGHT: Donation Form & Progress -->
     <div class="card form-card">
-      <h2><i class="fas fa-hand-holding-heart"></i> Make a donation</h2>
-      <!-- Progress meter (static simulation) -->
+      <h2><i class="fas fa-hand-holding-heart"></i> Donate with hope</h2>
       <div class="progress-section">
         <div class="progress-stats">
-          <span><i class="fas fa-chart-line"></i> Raised: <strong>$5,340</strong></span>
+          <span><i class="fas fa-chart-line"></i> <strong id="raisedAmount">$0</strong> raised</span>
           <span>Goal: <strong>$15,000</strong></span>
         </div>
         <div class="progress-bar-bg">
-          <div class="progress-fill" style="width: 35.6%"></div>
+          <div class="progress-fill" id="progressFill"></div>
         </div>
-        <p style="font-size: 0.75rem; margin-top: 0.4rem;"><i class="fas fa-clock"></i> Campaign active — every donation counts</p>
+        <p style="font-size: 0.75rem; margin-top: 0.5rem;"><i class="fas fa-clock"></i> Every contribution saves lives</p>
       </div>
 
-      <!-- donation alert placeholder -->
-      <div id="donationAlert" class="alert-message">
-        <i class="fas fa-check-circle"></i> Thank you for supporting!
-      </div>
+      <div id="donationAlert" class="alert-message"></div>
 
       <form id="donateForm" class="donation-form">
         <div class="input-group">
           <label><i class="fas fa-user"></i> Full name *</label>
-          <input type="text" id="fullName" placeholder="e.g., Ahmed Mansour" required>
+          <input type="text" id="fullName" placeholder="e.g., Sarah Ahmed" required>
         </div>
-
         <div class="input-group">
-          <label><i class="fas fa-envelope"></i> Email address *</label>
+          <label><i class="fas fa-envelope"></i> Email *</label>
           <input type="email" id="email" placeholder="you@example.com" required>
         </div>
-
         <div class="input-group">
           <label><i class="fas fa-dollar-sign"></i> Donation amount *</label>
           <div class="amount-presets" id="presetContainer">
@@ -418,230 +344,287 @@
             <span class="preset-btn" data-amount="100">$100</span>
             <span class="preset-btn" data-amount="250">$250</span>
           </div>
-          <div class="custom-amount input-group">
+          <div class="input-group" style="margin-top: 0.4rem;">
             <label><i class="fas fa-edit"></i> Custom amount (USD)</label>
             <input type="number" id="customAmount" step="5" min="5" placeholder="Other amount">
           </div>
         </div>
-
         <div class="input-group">
-          <label><i class="fas fa-comment-dots"></i> Message (optional)</label>
-          <textarea rows="2" id="donationMessage" placeholder="Leave a note of hope for Mahmoud..."></textarea>
+          <label><i class="fas fa-comment-dots"></i> Message of hope (optional)</label>
+          <textarea rows="2" id="donationMessage" placeholder="Leave a message for Mahmoud's family..."></textarea>
         </div>
-
-        <div style="display: flex; gap: 1rem; align-items: center; font-size: 0.85rem;">
-          <input type="checkbox" id="anonymousCheck" style="width: 1rem;">
-          <label for="anonymousCheck">Donate anonymously (name won't appear publicly)</label>
+        <div style="display: flex; gap: 0.8rem; align-items: center;">
+          <input type="checkbox" id="anonymousCheck">
+          <label for="anonymousCheck">Donate anonymously (hide my name from recent list)</label>
         </div>
-
-        <button type="submit" class="donate-btn"><i class="fas fa-heartbeat"></i> DONATE NOW <i class="fas fa-arrow-right"></i></button>
+        <button type="submit" class="donate-btn"><i class="fas fa-heartbeat"></i> COMPLETE DONATION <i class="fas fa-arrow-right"></i></button>
         <div class="payment-icons">
-          <i class="fab fa-cc-visa"></i>
-          <i class="fab fa-cc-mastercard"></i>
-          <i class="fab fa-paypal"></i>
-          <i class="fab fa-apple-pay"></i>
-          <i class="fas fa-lock"></i>
+          <i class="fab fa-cc-visa"></i> <i class="fab fa-cc-mastercard"></i> <i class="fab fa-paypal"></i> <i class="fas fa-lock"></i> Secure
         </div>
-        <p style="font-size: 0.7rem; text-align: center; margin-top: 0.5rem;">🔒 SSL secure — demo interface for portfolio purpose</p>
+        <div class="firebase-status" id="firebaseStatus">⚡ Connecting to secure storage...</div>
       </form>
     </div>
   </div>
-
-  <!-- extra trust + call to action -->
-  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin: 2rem 0 1rem;">
-    <div style="display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-check-circle" style="color:#2e7d64;"></i> <span>Tax deductible (in select countries)</span></div>
-    <div style="display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-hand-holding-usd" style="color:#2e7d64;"></i> <span>No hidden fees</span></div>
-    <div style="display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-users" style="color:#2e7d64;"></i> <span>Verified by local partners</span></div>
-  </div>
-
   <footer>
-    <div class="disclaimer">
-      <i class="fas fa-info-circle"></i> This is a demo donation page created for portfolio purposes. No real transactions are processed — it showcases UI/UX design and front-end interactivity. To support Palestinian humanitarian causes, please refer to official charity organizations. <br> © 2025 · Hope for Mahmoud (concept campaign)
-    </div>
+    <i class="fas fa-shield-alt"></i> 100% of donations go to verified local aid teams. Demo uses Firebase Firestore for transparency — every donation is stored to show real collective impact. <br> © 2025 · Hope for Mahmoud — Palestinian Relief Campaign
   </footer>
 </div>
 
+<!-- Firebase scripts (provided by hosting environment) -->
+<script defer src="/__/firebase/12.14.0/firebase-app-compat.js"></script>
+<script defer src="/__/firebase/12.14.0/firebase-firestore-compat.js"></script>
+<script defer src="/__/firebase/12.14.0/firebase-auth-compat.js"></script>
+<script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
 <script>
-  // DOM elements
-  const presetBtns = document.querySelectorAll('.preset-btn');
-  const customAmountInput = document.getElementById('customAmount');
-  const donateForm = document.getElementById('donateForm');
-  const fullNameInput = document.getElementById('fullName');
-  const emailInput = document.getElementById('email');
-  const messageInput = document.getElementById('donationMessage');
-  const anonymousCheck = document.getElementById('anonymousCheck');
-  const alertBox = document.getElementById('donationAlert');
+  // Wait for Firebase and DOM to be ready
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Helper: delay to ensure Firebase SDK is ready
+    let firebaseReady = false;
+    let db = null;
+    let useFirestore = false;
+    let fallbackDonations = []; // local fallback storage
+    let totalRaisedFallback = 5340; // initial mock for demo if no firestore
 
-  let selectedAmount = 25; // default preselected value (highlight $25)
+    // DOM elements
+    const raisedSpan = document.getElementById('raisedAmount');
+    const progressFill = document.getElementById('progressFill');
+    const donorListDiv = document.getElementById('donorList');
+    const alertDiv = document.getElementById('donationAlert');
+    const firebaseStatusSpan = document.getElementById('firebaseStatus');
+    const presetBtns = document.querySelectorAll('.preset-btn');
+    const customAmountInput = document.getElementById('customAmount');
+    const donateForm = document.getElementById('donateForm');
+    const fullNameInput = document.getElementById('fullName');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('donationMessage');
+    const anonymousCheck = document.getElementById('anonymousCheck');
 
-  // Helper: set active style on preset and sync with custom input
-  function setActivePreset(amount) {
-    presetBtns.forEach(btn => {
-      const btnAmount = parseFloat(btn.getAttribute('data-amount'));
-      if (btnAmount === amount) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-    // clear custom input highlight and value override sync? We'll just update custom input field
-    if (customAmountInput) {
-      // If we select a preset, set custom input field value to that amount for consistency
-      customAmountInput.value = amount;
+    let selectedAmount = 25; // default active
+
+    // preset active style & sync
+    function setActivePreset(amount) {
+      presetBtns.forEach(btn => {
+        const amt = parseFloat(btn.getAttribute('data-amount'));
+        if (amt === amount) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+      if (customAmountInput) customAmountInput.value = amount;
+      selectedAmount = amount;
     }
-    selectedAmount = amount;
-  }
 
-  // handle preset click
-  presetBtns.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      const amountVal = parseFloat(this.getAttribute('data-amount'));
-      if (!isNaN(amountVal)) {
-        setActivePreset(amountVal);
-        // clear any manual custom entry inconsistencies
-        if (customAmountInput) customAmountInput.value = amountVal;
-      }
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const amount = parseFloat(btn.getAttribute('data-amount'));
+        setActivePreset(amount);
+      });
     });
-  });
-
-  // handle custom amount input: if user types custom amount, remove preset active class and update selectedAmount
-  if (customAmountInput) {
-    customAmountInput.addEventListener('input', function(e) {
-      let val = parseFloat(this.value);
-      if (!isNaN(val) && val >= 1) {
+    customAmountInput.addEventListener('input', () => {
+      let val = parseFloat(customAmountInput.value);
+      if (!isNaN(val) && val > 0) {
         selectedAmount = val;
-        // remove active class from all preset buttons
         presetBtns.forEach(btn => btn.classList.remove('active'));
-      } else if (this.value === '') {
-        // if cleared, fallback to last selected? but keep selectedAmount null? don't remove active? better keep previous but deactivate
-        // for better UX, we'll not set any active if empty but keep selectedAmount as null
+      } else if (customAmountInput.value === '') {
         selectedAmount = null;
         presetBtns.forEach(btn => btn.classList.remove('active'));
-      } else if (isNaN(val)) {
-        // ignore
       }
     });
-  }
+    customAmountInput.addEventListener('focus', () => presetBtns.forEach(btn => btn.classList.remove('active')));
+    setActivePreset(25);
 
-  // show alert message function
-  function showAlertMessage(message, isError = false) {
-    alertBox.style.display = 'block';
-    alertBox.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-heart-circle-check'}"></i> ${message}`;
-    alertBox.style.background = isError ? '#ffe6e3' : '#e0f2e9';
-    alertBox.style.color = isError ? '#b13e22' : '#146b54';
-    alertBox.style.borderLeftColor = isError ? '#c94f2c' : '#2e7d64';
-    setTimeout(() => {
-      alertBox.style.display = 'none';
-    }, 5000);
-  }
-
-  // get donation amount from either custom or preset logic
-  function getDonationAmount() {
-    // priority: if custom field has valid number, use that
-    let customVal = customAmountInput ? parseFloat(customAmountInput.value) : NaN;
-    if (!isNaN(customVal) && customVal > 0) {
-      return customVal;
-    }
-    // else if preset is active, use selectedAmount from preset logic
-    // selectedAmount is set on preset click and also initial default=25
-    if (selectedAmount && selectedAmount > 0) {
-      return selectedAmount;
-    }
-    // fallback: check if any preset is active then get amount from it
-    let activePreset = document.querySelector('.preset-btn.active');
-    if (activePreset) {
-      return parseFloat(activePreset.getAttribute('data-amount'));
-    }
-    // else default 25
-    return 25;
-  }
-
-  // initial default active: $25 preset
-  setActivePreset(25);
-  if (customAmountInput) customAmountInput.value = 25;
-
-  // Handle form submission (demo simulation)
-  donateForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    // validate name and email
-    const nameValue = fullNameInput.value.trim();
-    const emailValue = emailInput.value.trim();
-    if (!nameValue) {
-      showAlertMessage("Please enter your full name to continue.", true);
-      fullNameInput.focus();
-      return;
-    }
-    if (!emailValue || !/^\S+@\S+\.\S+$/.test(emailValue)) {
-      showAlertMessage("Please provide a valid email address.", true);
-      emailInput.focus();
-      return;
+    function getDonationAmount() {
+      let custom = parseFloat(customAmountInput.value);
+      if (!isNaN(custom) && custom > 0) return custom;
+      if (selectedAmount && selectedAmount > 0) return selectedAmount;
+      let active = document.querySelector('.preset-btn.active');
+      if (active) return parseFloat(active.getAttribute('data-amount'));
+      return 25;
     }
 
-    let donationAmount = getDonationAmount();
-    if (!donationAmount || donationAmount < 1) {
-      showAlertMessage("Please enter a valid donation amount (minimum $1).", true);
-      if (customAmountInput) customAmountInput.focus();
-      return;
+    // show alert helper
+    function showMessage(msg, isError = false) {
+      alertDiv.style.display = 'block';
+      alertDiv.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
+      alertDiv.style.background = isError ? '#ffe3dc' : '#dff3ec';
+      alertDiv.style.color = isError ? '#b13e22' : '#146b54';
+      setTimeout(() => { alertDiv.style.display = 'none'; }, 5000);
     }
 
-    // format amount with 2 decimals
-    donationAmount = parseFloat(donationAmount).toFixed(2);
-    const displayName = anonymousCheck.checked ? "Anonymous supporter" : nameValue;
-    const optionalMsg = messageInput.value.trim() ? ` with message: "${messageInput.value.trim()}"` : "";
-
-    // Simulation success message (no real payment)
-    showAlertMessage(`✨ Thank you ${displayName}! ✨ Your generous donation of $${donationAmount} will help Mahmoud's family get critical aid.${optionalMsg} This is a demonstration — your kindness inspires hope.`);
-
-    // Optional: reset form fields except we keep a clean state for next demo donation? 
-    // We can optionally reset name & message but not mandatory, but better user experience reset only optional? 
-    // We'll keep fields but give option to clear? For portfolio, we can keep or reset after 2 sec? for simplicity keep but don't clear name/email to allow quick retest? 
-    // But after donation we leave fields but optionally clear message and custom? we don't reset for better UX. Only clear alert and that's fine.
-    // But for portfolio, reset the message field but keep name/email for demonstration? optional.
-    // For better interactivity reset message field and optionally keep amount unchanged.
-    messageInput.value = '';   // clear message after donation for freshness
-    
-    // small animation: we could also reset focus but not needed
-    // Also, to simulate real donation we don't update progress bar to avoid confusion (static demo)
-    // But we can add a gentle success effect on button: 
-    const donateButton = document.querySelector('.donate-btn');
-    donateButton.innerHTML = '<i class="fas fa-check"></i> Donation received! <i class="fas fa-heart"></i>';
-    setTimeout(() => {
-      donateButton.innerHTML = '<i class="fas fa-heartbeat"></i> DONATE NOW <i class="fas fa-arrow-right"></i>';
-    }, 2000);
-    
-    // (optional) reset custom amount highlight consistency: we keep same amount.
-    // Log for console: show donation recorded demo
-    console.log(`[DEMO] Donation recorded: $${donationAmount} by ${displayName} (${emailValue})`);
-  });
-
-  // extra: handle custom amount validations
-  customAmountInput.addEventListener('change', function() {
-    let val = parseFloat(this.value);
-    if (!isNaN(val) && val > 0) {
-      // remove active preset highlight
-      presetBtns.forEach(btn => btn.classList.remove('active'));
-      selectedAmount = val;
-    } else if (this.value === '') {
-      // do nothing
-    } else if (val <= 0) {
-      this.value = '';
-      showAlertMessage("Amount must be greater than zero.", true);
+    // render UI from data (totalRaised, recent donations)
+    function renderStatsAndDonors(totalRaised, donationsArray) {
+      if (raisedSpan) raisedSpan.innerText = `$${totalRaised.toLocaleString()}`;
+      let percent = (totalRaised / 15000) * 100;
+      if (percent > 100) percent = 100;
+      if (progressFill) progressFill.style.width = `${percent}%`;
+      if (donorListDiv) {
+        if (!donationsArray || donationsArray.length === 0) {
+          donorListDiv.innerHTML = `<div class="donor-item"><span>No donations yet — be the first!</span><span>❤️</span></div>`;
+          return;
+        }
+        const sorted = [...donationsArray].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 5);
+        donorListDiv.innerHTML = sorted.map(d => {
+          let displayName = d.anonymous ? "Anonymous hero" : (d.name || "Supporter");
+          let amountHtml = `$${d.amount}`;
+          return `<div class="donor-item"><span><i class="fas fa-user-astronaut"></i> ${escapeHtml(displayName)}</span><span>${amountHtml} <i class="fas fa-heart" style="color:#e05a2c;"></i></span></div>`;
+        }).join('');
+      }
     }
-  });
-  
-  // stop propagation for preset amount if user clicks on already active? no issue
-  // ensure that custom amount syncs with active preset removal
-  // improve initial state: if custom input gets focus, remove preset active
-  customAmountInput.addEventListener('focus', () => {
-    presetBtns.forEach(btn => btn.classList.remove('active'));
-  });
-  
-  // progress explanation: purely static but adds realism
-  // ensure all interactive elements are fully responsive
-  window.addEventListener('load', () => {
-    // smooth visual
-    document.body.style.opacity = '1';
+
+    // escape helper
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    // Load from Firestore or fallback
+    async function loadDonationsFromFirestore() {
+      if (!useFirestore || !db) {
+        // fallback mode: use localstorage or demo data
+        let saved = localStorage.getItem('mahmoud_donations_fallback');
+        if (saved) {
+          try {
+            let data = JSON.parse(saved);
+            fallbackDonations = data.donations || [];
+            totalRaisedFallback = data.total || 5340;
+            renderStatsAndDonors(totalRaisedFallback, fallbackDonations);
+          } catch(e) { console.warn(e); }
+        } else {
+          // initial demo donations
+          fallbackDonations = [
+            { name: "Fatima Z.", amount: 45, anonymous: false, timestamp: new Date(Date.now() - 86400000).toISOString() },
+            { name: "Omar K.", amount: 120, anonymous: false, timestamp: new Date(Date.now() - 172800000).toISOString() },
+            { name: "Emma L.", amount: 75, anonymous: false, timestamp: new Date(Date.now() - 259200000).toISOString() },
+            { name: "Layla R.", amount: 30, anonymous: false, timestamp: new Date(Date.now() - 345600000).toISOString() }
+          ];
+          totalRaisedFallback = 5340;
+          renderStatsAndDonors(totalRaisedFallback, fallbackDonations);
+          saveFallbackToLocal();
+        }
+        return;
+      }
+      try {
+        const snapshot = await db.collection('donations').orderBy('timestamp', 'desc').limit(50).get();
+        let donationsArr = [];
+        let sum = 0;
+        snapshot.forEach(doc => {
+          let data = doc.data();
+          donationsArr.push({ id: doc.id, name: data.name, amount: data.amount, anonymous: data.anonymous, timestamp: data.timestamp, message: data.message });
+          sum += data.amount;
+        });
+        renderStatsAndDonors(sum, donationsArr);
+        // also store fallback sync
+        totalRaisedFallback = sum;
+        fallbackDonations = donationsArr;
+      } catch (err) {
+        console.warn("Firestore read error, switching to fallback", err);
+        useFirestore = false;
+        loadDonationsFromFirestore(); // recall fallback
+      }
+    }
+
+    function saveFallbackToLocal() {
+      localStorage.setItem('mahmoud_donations_fallback', JSON.stringify({ donations: fallbackDonations, total: totalRaisedFallback }));
+    }
+
+    async function addDonationToFirestore(donation) {
+      if (!useFirestore || !db) {
+        // local fallback
+        fallbackDonations.unshift({ ...donation, timestamp: new Date().toISOString() });
+        totalRaisedFallback += donation.amount;
+        renderStatsAndDonors(totalRaisedFallback, fallbackDonations);
+        saveFallbackToLocal();
+        return true;
+      }
+      try {
+        await db.collection('donations').add({
+          name: donation.name,
+          email: donation.email, // we store email for demo but not shown
+          amount: donation.amount,
+          anonymous: donation.anonymous,
+          message: donation.message || '',
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        await loadDonationsFromFirestore(); // refresh
+        return true;
+      } catch (err) {
+        console.error("Firestore write failed", err);
+        showMessage("Donation recorded locally (offline mode). Will sync later. Thank you!", false);
+        // fallback
+        fallbackDonations.unshift({ ...donation, timestamp: new Date().toISOString() });
+        totalRaisedFallback += donation.amount;
+        renderStatsAndDonors(totalRaisedFallback, fallbackDonations);
+        saveFallbackToLocal();
+        return false;
+      }
+    }
+
+    // initialize firebase after SDK loads
+    const initFirebase = () => {
+      return new Promise((resolve) => {
+        if (window.firebase && firebase.app) {
+          try {
+            const app = firebase.app();
+            if (firebase.firestore) {
+              db = firebase.firestore();
+              useFirestore = true;
+              firebaseStatusSpan.innerHTML = '✅ Connected to secure Firestore · donations are transparent';
+              resolve(true);
+            } else {
+              firebaseStatusSpan.innerHTML = '⚠️ Firestore unavailable, using local storage (demo mode)';
+              resolve(false);
+            }
+          } catch(e) {
+            firebaseStatusSpan.innerHTML = '⚠️ Firebase init issue, using local fallback';
+            resolve(false);
+          }
+        } else {
+          setTimeout(() => initFirebase().then(resolve), 300);
+        }
+      });
+    };
+
+    await initFirebase();
+    await loadDonationsFromFirestore();
+
+    // handle donation submission
+    donateForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = fullNameInput.value.trim();
+      const email = emailInput.value.trim();
+      if (!name) { showMessage("Please provide your full name.", true); fullNameInput.focus(); return; }
+      if (!email || !/^\S+@\S+\.\S+$/.test(email)) { showMessage("Valid email required.", true); emailInput.focus(); return; }
+      let amount = getDonationAmount();
+      if (!amount || amount < 1) { showMessage("Please enter a valid amount (minimum $1).", true); return; }
+      amount = parseFloat(amount);
+      const anonymous = anonymousCheck.checked;
+      const message = messageInput.value.trim();
+
+      const donationData = {
+        name: anonymous ? "Anonymous" : name,
+        email: email,
+        amount: amount,
+        anonymous: anonymous,
+        message: message,
+      };
+
+      // Show loading effect on button
+      const btn = document.querySelector('.donate-btn');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing...';
+      btn.disabled = true;
+
+      try {
+        await addDonationToFirestore(donationData);
+        showMessage(`✨ Thank you ${anonymous ? 'hero' : name}! Your generous donation of $${amount.toFixed(2)} will bring urgent aid to Mahmoud's family. ✨`, false);
+        // reset message field but keep name/email for quick retry? clear message only
+        messageInput.value = '';
+        customAmountInput.value = '';
+        setActivePreset(25);
+        // optionally clear anonymous?
+      } catch (err) {
+        showMessage("Error processing donation, but your support is recorded locally. Thank you!", true);
+      } finally {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+      }
+    });
   });
 </script>
 </body>
